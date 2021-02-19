@@ -43,7 +43,26 @@ class NEODatabase:
 
         # TODO: What additional auxiliary data structures will be useful?
 
+        # A disctionary to fetch a NEW by designation
+        self._designation_neo_dict = {}
+        # A disctionary to fetch a NEW by name
+        self._name_neo_dict = {}
+
         # TODO: Link together the NEOs and their close approaches.
+        # Created dictionary of NEOs by designation and by name
+        for neo in self._neos:
+            # disctionary by designation
+            self._designation_neo_dict[neo.designation] = neo
+            # dictionary by name for NEOs with name
+            if neo.name:
+                self._name_neo_dict[neo.name] = neo
+        
+        # Attache to approach a NEO pulled by designation, add approach to NEO
+        for approach in self._approaches:
+            neo = self._designation_neo_dict[approach._designation]
+            approach.neo = neo
+            neo.approaches.append(approach)
+
 
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
@@ -58,8 +77,8 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-        # TODO: Fetch an NEO by its primary designation.
-        return None
+        # TODO: Fetch an NEO by its primary designation. Return None if designation is not found
+        return self._designation_neo_dict.get(designation, None)
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -76,7 +95,7 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         # TODO: Fetch an NEO by its name.
-        return None
+        return self._name_neo_dict.get(name, None)
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.
@@ -94,4 +113,6 @@ class NEODatabase:
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
         for approach in self._approaches:
-            yield approach
+            filter_outcomes = map(lambda x: x(approach), filters)
+            if all(filter_outcomes):
+                yield approach
