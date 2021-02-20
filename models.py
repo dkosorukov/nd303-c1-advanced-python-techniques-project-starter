@@ -32,6 +32,7 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, **info):
         """Create a new `NearEarthObject`.
 
@@ -122,6 +123,7 @@ class CloseApproach:
 
     @property
     def fullname(self):
+        """Return a representation of the full name of the Close Approach."""
         return f'{self._designation!r} ({self.neo!r})' if self.neo else f'{self._designation!r}'
 
     def __str__(self):

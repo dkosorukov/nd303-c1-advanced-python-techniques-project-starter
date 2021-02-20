@@ -71,6 +71,7 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return `repr(self)`, a computer-readable string representation of this object."""
         return (f'{self.__class__.__name__}(op=operator.{self.op.__name__},'
                 f' value={self.value})')
 
@@ -78,33 +79,48 @@ class AttributeFilter:
 # Filter classes
 # NEO filter
 class DiameterFilter(AttributeFilter):
+    """Create NEO diameter filter class."""
+
     @classmethod
     def get(cls, approach):
+        """Return NEO's diameter."""
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
+    """Create NEO hazardous filter class."""
+
     @classmethod
     def get(cls, approach):
+        """Return NEO's hazardous status."""
         return approach.neo.hazardous
 
 
 # Approach filters
 class DistanceFilter(AttributeFilter):
+    """Return Close Approache's distance."""
+
     @classmethod
     def get(cls, approach):
+        """Return Approache's hazardous distance."""
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
+    """Return Close Approache's velocity."""
+
     @classmethod
     def get(cls, approach):
+        """Return Approache's hazardous velocity."""
         return approach.velocity
 
 
 class DateFilter(AttributeFilter):
+    """Return Close Approache's date."""
+
     @classmethod
     def get(cls, approach):
+        """Return Approache's hazardous date."""
         return approach.time.date()
 
 
@@ -142,7 +158,6 @@ def create_filters(date=None, start_date=None, end_date=None,
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-
     # Collection of filters
     output = []
     if date is not None:
@@ -178,7 +193,6 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-
     if n == 0:
         n = None
 
